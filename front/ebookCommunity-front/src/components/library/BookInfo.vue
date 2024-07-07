@@ -38,7 +38,7 @@
               古代典籍校勘与研究、散文、现代散文诗、旧体诗、外国文学与学术翻译作品和木刻版画的研究，对于五
               四运动以后的中国社会思想文化发展产生一定的影响，蜚声世界文坛，尤其在韩国、日本思想文化领域有极其重要
               的地位和影响，被誉为“二十世纪东亚文化地图上占最大领土的作家”。毛泽东评价他
-              是伟大的无产阶级的文学家、思想家、革命家，是中国文化革命的主将，也被人民称为“民族魂”。撒大大大叔发放
+              是伟大的无产阶级的文学家、思想家、革命家，是中国文化革命的主将，也被人民称为“民族魂”。
             </p>
           </div>
         </div>
@@ -237,7 +237,7 @@ export default {
           </div>
         </div>
         <div style="margin-top: 20px;">
-          <comments></comments>
+          <comments :bookId="id"></comments>
         </div>
       </div>
     </div>
@@ -289,7 +289,7 @@ export default {
 }
 
 .book-info {
-  margin-top: 50px;
+  margin-top: 40px;
   margin-left: 50px;
   width: 80%;
 }
