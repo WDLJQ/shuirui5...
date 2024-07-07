@@ -1,4 +1,4 @@
-package cn.pyk.entity;
+package main.java.cn.pyk.entity;
 
 import lombok.Data;
 
@@ -76,5 +76,13 @@ public class Book {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    public int getCollect() {
+        return collect;
+    }
+
+    public void setCollect(int collect) {
+        this.collect = collect;
     }
 }

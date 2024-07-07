@@ -1,4 +1,4 @@
-package cn.pyk.controller;
+package main.java.cn.pyk.controller;
 
 import cn.pyk.entity.User;
 import cn.pyk.service.impl.UserService;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -111,7 +110,7 @@ public class UserController {
 
     //用户登录
     @GetMapping("login")
-    public Result doLogin(@RequestParam String username,
+    public Result<User> doLogin(@RequestParam String username,
                            @RequestParam String password,
                            HttpServletResponse response){
         User user = userService.findUser(username,password);
@@ -125,7 +124,7 @@ public class UserController {
             cookie.setMaxAge(7*24*60*60); //七天过期
             cookie.setPath("/");
             response.addCookie(cookie);
-            return Result.success(true, "登录成功");
+            return Result.success(user, "登录成功");
         }else {
             return Result.error("400", "用户名或密码错误");
         }
