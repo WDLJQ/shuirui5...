@@ -12,11 +12,7 @@ export default{
   <div>评论 {{ 2 }}
     <div class="comment-header">
       <div class="avatar-input-container">
-        <el-avatar
-          :src="avatarUrl"
-          :size="40"
-          style="margin-right: 10px;"
-        ></el-avatar>
+        <img src="@/assets/cc.jpg" alt="" style="width:40px; height:40px; border-radius:50%;margin-right: 10px; ">
         <el-input
           :placeholder="placeholderText"
           v-model="context"
@@ -26,37 +22,21 @@ export default{
           size="mini"
           :maxlength="contentLength"
           @focus="isShowSecReply(undefined)"
+          style="margin-right: 20px"
         ></el-input>
-      </div>
-<el-button
+        <el-button
   type="primary"
   style="height: 40px"
   @click="addComment(articleId, undefined)"
 >{{ buttonText }}</el-button>
+      </div>
+
 </div>
     <div class="comment">
-      <!-- <div class="comment-header">
-
-        <el-input
-          :placeholder="placeholderText"
-          v-model="context"
-          class="input"
-          type="textarea"
-          resize="none"
-          size="mini"
-          :maxlength="contentLength"
-          @focus="isShowSecReply(undefined)"
-        ></el-input>
-        <el-button
-          type="primary"
-          style="height: 40px"
-          @click="addComment(articleId, undefined)"
-        >{{ buttonText }}</el-button>
-      </div> -->
       <div class="comment-body" v-for="(item, index) in comments" :key="item._id + '' + index">
         <!-- 一级评论 -->
         <div class="first-comment">
-          <el-avatar :size="40" :src="item.avatarUrl"></el-avatar>
+          <img src="@/assets/cc.jpg" alt="" style="width:40px; height:40px; border-radius:50%;margin-right: 10px; ">
           <div class="content">
             <!-- 一级评论用户昵称 -->
             <h3>{{ item.username }}</h3>
@@ -105,7 +85,8 @@ export default{
               :key="reply._id + '' + index"
             >
               <!-- 次级评论头像,该用户没有头像则显示默认头像 -->
-              <el-avatar :size="40" :src="reply.avatarUrl"></el-avatar>
+              <!-- <el-avatar :size="40" :src="reply.avatarUrl"></el-avatar> -->
+              <img src="@/assets/cc.jpg" alt="" style="width:40px; height:40px; border-radius:50%;margin-right: 10px; ">
               <div class="content">
                 <!-- 次级评论用户昵称 -->
                 <h3>{{ reply.username }}</h3>
@@ -373,8 +354,12 @@ export default{
   
   <style scoped>
   /* 原有的less样式改为标准CSS */
-
-
+.avatar-input-container{
+  display: flex;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+  
   .comment {
     margin-top: 20px;
     width: 100%;
