@@ -25,7 +25,8 @@
           {name: '/index', navItem: '首页'},
           {name: '/jotter', navItem: '笔记本'},
           {name: '/library', navItem: '图书馆'},
-          {name: '/personal', navItem: '个人中心'}
+          {name: '/personal', navItem: '个人中心'},
+          {name: '/bookorder', navItem: '排行榜'}
         ]
       }
     },
