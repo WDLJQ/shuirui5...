@@ -8,6 +8,7 @@ import AppIndex from '@/components/AppIndex.vue'
 import LibraryIndex from '@/components/library/LibraryIndex.vue'
 import Personal from '@/components/personal/Personal.vue'
 import BookInfo from '@/components/library/BookInfo.vue'
+import Bookorder from '@/components/library/Bookorder.vue'
 
 Vue.use(VueRouter)
 
@@ -67,6 +68,13 @@ export default new VueRouter({
           name: 'Personal',
           component: Personal,
         },
+
+        {
+          path: '/bookorder',
+          name: "bookorder",
+          component:  Bookorder,
+
+        }
       ]
     }
   
