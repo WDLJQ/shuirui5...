@@ -19,4 +19,11 @@ mybatis-plus:
   global-config:
     db-config:
       #table-prefix: tb_		#设置表名通用前缀
-      id-type: auto		
+      id-type: auto
+
+upload:
+  path: D:/img
+
+jwt:
+  secret: yourSecretKey
+  expiration: 604800  # 7 days in seconds
