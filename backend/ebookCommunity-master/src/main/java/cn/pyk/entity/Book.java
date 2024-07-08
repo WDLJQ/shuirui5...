@@ -4,15 +4,16 @@ import lombok.Data;
 
 @Data
 public class Book {
-    private int id;         //书号
-    private String cover;   //书籍封面
-    private String title;   //书籍标题
-    private String author;  //作者
-    private String date;    //出版日期
-    private String press;   //出版社
-    private String abs;     //书籍摘要
-    private int cid;        //类别号
-    private int collect;    //收藏数
+    private int id;                 //书号
+    private String cover;           //书籍封面
+    private String title;           //书籍标题
+    private String author;          //作者
+    private String date;            //出版日期
+    private String press;           //出版社
+    private String abs;             //书籍摘要
+    private int cid;                //类别号
+    private int collect;            //收藏数
+    private String authorIntro;     //作者简介
 
     public int getId() {
         return id;
@@ -84,5 +85,13 @@ public class Book {
 
     public void setCollect(int collect) {
         this.collect = collect;
+    }
+
+    public String getAuthorIntro() {
+        return authorIntro;
+    }
+
+    public void setAuthorIntro(String authorIntro) {
+        this.authorIntro = authorIntro;
     }
 }

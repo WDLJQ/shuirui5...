@@ -114,7 +114,7 @@ public class BookController {
 
     //新增书籍
     @PostMapping("/insertBook")
-    public Result<Boolean> insertBook(@RequestParam Book book){
+    public Result<Boolean> insertBook(@RequestBody Book book){
         if(bookService.insertBook(book)) {
             return Result.success(true,"新增书籍成功!");
         }
