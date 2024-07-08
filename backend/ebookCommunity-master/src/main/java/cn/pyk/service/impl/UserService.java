@@ -1,4 +1,4 @@
-package cn.pyk.service.impl;
+package main.java.cn.pyk.service.impl;
 
 import cn.pyk.entity.User;
 import cn.pyk.mapper.UserMapper;
@@ -6,11 +6,14 @@ import cn.pyk.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
+public class UserService extends ServiceImpl<UserMapper, User> implements IUserService, UserDetailsService {
     @Autowired
     public UserMapper userMapper;
 
@@ -41,5 +44,15 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     //修改用户密码
     public boolean changePwd(User user) {
         return userMapper.updateById(user) > 0;
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("username", username);
+        User user = userMapper.selectOne(qw);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return user;
     }
 }
