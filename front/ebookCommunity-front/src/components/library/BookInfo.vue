@@ -194,21 +194,29 @@ export default {
   <div class="outer-container">
     <div class="container">
       <div class="book-info">
+        
         <el-row :gutter="20">
-          <el-col :span="6">
-            <img src="@/assets/2.jpg" alt="Book Cover" class="book-cover">
-          </el-col>
-          <el-col :span="18" class="book-details">
-            <h3 style="margin-bottom: 8px;">{{ book.title }}</h3>
-            <p style="margin: 5px">{{ book.author }}</p>
-            <p style="margin: 5px;">{{ book.date }}</p>
-            <p class="description">{{ book.abs }}</p>
-            <div class="actions">
-              <el-button type="primary">立即阅读</el-button>
-              <el-button>加入书架</el-button>
-            </div>
-          </el-col>
-        </el-row>
+  <el-col :span="6">
+    <img src="@/assets/2.jpg" alt="Book Cover" class="book-cover">
+  </el-col>
+  <el-col :span="18" class="book-details">
+    <div class="title-container" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+      <h3>{{ book.title }}</h3>
+      <i v-if="isAdmin" class="el-icon-edit" 
+      style="cursor: pointer;margin-right: 200px;font-size: 20px"
+      @click="handleEditClick"
+      ></i>
+    </div>
+    <p style="margin: 5px">{{ book.author }}</p>
+    <p style="margin: 5px;">{{ book.date }}</p>
+    <p class="description">{{ book.abs }}</p>
+    <div class="actions">
+      <el-button type="primary">立即阅读</el-button>
+      <el-button @click="toggleShelf" :type="buttonType">{{ buttonText }}</el-button>
+    </div>
+  </el-col>
+</el-row>
+
         <div class="m-bookauthor">
           <h4>作者简介</h4>
           <div class="f-border detail">
@@ -241,6 +249,55 @@ export default {
         </div>
       </div>
     </div>
+    <el-dialog
+      title="新增图书"
+      :visible.sync="dialogVisible"
+      width="35%" 
+      :center="true"
+      @close="handleClose">
+      <el-form ref="form" :model="bookForm" label-width="80px">
+<div style="display: flex; flex-direction: row;">
+      <div style="display: flex; flex-direction: column;">
+        <el-form-item label="书名" >
+        <el-input v-model="bookForm.title" placeholder="请输入书名" style="width: 180px"></el-input>
+      </el-form-item>
+        <el-form-item label="作者" >
+          <el-input v-model="bookForm.author" placeholder="请输入作者" style="width: 180px"></el-input>
+        </el-form-item>
+        <el-form-item label="日期">
+          <el-date-picker v-model="bookForm.date" type="date" placeholder="选择日期" style="width: 180px"></el-date-picker>
+        </el-form-item>
+      </div>
+      <div style="display: flex; flex-direction: column;text-align: center;margin-top: 0px">
+        <span>上传封面</span>
+        <el-upload
+        style="margin-left: 30px; margin-top: 0px"
+          class="avatar-uploader"
+          action="http://localhost:8090/upload"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="bookForm.imageUrl" :src="'http://localhost:8090/images/upload/' + bookForm.imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </div>
+      </div>
+        <el-form-item label="出版社">
+          <el-input v-model="bookForm.press" placeholder="请输入出版社" style="width: 50%"></el-input>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="bookForm.abs" type="textarea" placeholder="请输入书籍描述" ></el-input>
+        </el-form-item>
+        <el-form-item label="作者简介">
+          <el-input v-model="bookForm.authorinfo" type="textarea" placeholder="请输入书籍描述" ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSubmit" style="margin-right: 30px;">提交</el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -252,13 +309,53 @@ export default {
   props: ['id'],
   data() {
     return {
-      book: {}
+      book: {},
+      // 初始化按钮状态为“加入书架”
+      isOnShelf: false,
+      isAdmin:true,
+      dialogVisible: false,
+      bookForm: {  // 新增书籍表单数据
+        title: '',
+        author: '',
+        date: '',
+        press: '',
+        abs: '',
+        authorinfo:'',
+        imageUrl:''
+      }
     };
   },
   mounted() {
     this.loadBookInfo();
   },
+  computed: {
+    // 计算按钮文本
+    buttonText() {
+      return this.isOnShelf ? '已在书架' : '加入书架';
+    },
+    // 计算按钮类型
+    buttonType() {
+      return this.isOnShelf ? 'info' : '';
+    }
+  },
   methods: {
+    handleAvatarSuccess(res) {
+      console.log("img",res)
+      this.registerForm.imageUrl= res
+        //this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
     loadBookInfo() {
       // 模拟加载图书信息
       const books = [
@@ -273,6 +370,29 @@ export default {
         }
       ];
       this.book = books.find(book => book.id == this.id) || {};
+    },
+    toggleShelf() {
+      // 切换按钮状态
+      this.isOnShelf = !this.isOnShelf;
+      // 这里可以添加逻辑来更新书架状态，例如调用 API 等
+
+      this.$message.success(this.isOnShelf ? '已加入书架' : '已移出书架');
+    },
+    handleEditClick() {
+      this.dialogVisible=true
+      // 编辑图标点击的逻辑处理
+      //alert('编辑图标被点击');
+    },
+    handleClose() {
+      // 清空表单数据
+      this.$refs['form'].resetFields();
+    },
+    handleSubmit() {
+      // 提交表单数据，可以通过 this.bookForm 获取表单数据，发送到后端进行保存等操作
+      console.log('提交表单:', this.bookForm);
+      // 在这里可以调用保存数据的方法，比如 this.saveBook(this.bookForm);
+      // 提交成功后关闭对话框
+      this.dialogVisible = false;
     }
   }
 };
@@ -391,4 +511,29 @@ export default {
   font-size: 14px;
   color: #655;
 }
+
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 170px;
+    height: 170px;
+    line-height: 170px;
+    text-align: center;
+  }
+  .avatar {
+    width: 170px;
+    height: 170px;
+    display: block;
+  }
 </style>

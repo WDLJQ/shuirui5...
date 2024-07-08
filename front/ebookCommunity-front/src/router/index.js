@@ -7,8 +7,12 @@ import Register from '@/views/Register.vue';
 import AppIndex from '@/components/AppIndex.vue'
 import LibraryIndex from '@/components/library/LibraryIndex.vue'
 import Personal from '@/components/personal/Personal.vue'
+import Showinfo from '@/components/personal/ShowInfo.vue'
+import Infoeditor from '@/components/personal/InfoEditor.vue'
+import ImageUp from '@/components/personal/ImageUp.vue'
+import MyCollect from '@/components/personal/MyCollect.vue'
+
 import BookInfo from '@/components/library/BookInfo.vue'
-import Bookorder from '@/components/library/Bookorder.vue'
 
 Vue.use(VueRouter)
 
@@ -67,16 +71,50 @@ export default new VueRouter({
           path: '/personal',
           name: 'Personal',
           component: Personal,
+          redirect:'/showinfo',
+          children:[
+            {
+              path: '/showinfo',
+          name: 'Showinfo',
+          component: Showinfo,
         },
+          {
+            path: '/infoeditor',
+            name: 'Infoeditor',
+            component: Infoeditor,
+          },
+          {
+            path: '/imageUp',
+            name: 'Imageup',
+            component: ImageUp,
+          },
+          {
+            path: '/mycollect',
+            name: 'MyCollect',
+            component: MyCollect,
+          },
 
-        {
-          path: '/bookorder',
-          name: "bookorder",
-          component:  Bookorder,
 
-        }
+          ]
+        
+        },
+        // {
+        //   path: '/showinfo',
+        //   name: 'Showinfo',
+        //   component: Showinfo,
+        // },
       ]
-    }
+    },
+    // {
+    //   path: '/personal',
+    //   name: 'Personal',
+    //   component: Personal,
+    //   children:[
+    //     {path: '/showinfo',
+    //   name: 'Showinfo',
+    //   component: Showinfo,}
+    //   ]
+    // },
   
   ]
 })
